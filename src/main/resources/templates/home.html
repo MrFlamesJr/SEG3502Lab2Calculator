@@ -8,16 +8,10 @@
 </head>
 
 <body>
-    <div>
-        <h1>Lab2:Calculator</h1>
+    <!-- Replace this with your actuall UI -->
+    <p th:text="${result}"></p>
+    <p class="error" th:text="${error}"></p>
 
-        <div th:switch="${error}">
-            <p th:case="NumberFormatError">
-                Wrong value provided for a number - must be a number
-            </p>
-        </div>
-
-    </div>
 </body>
 
 </html>

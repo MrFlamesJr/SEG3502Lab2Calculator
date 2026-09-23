@@ -6,11 +6,16 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.slf4j.LoggerFactory
 
 @Controller
 class WebController {
+
+    private val logger = LoggerFactory.getLogger(WebController::class.java)
+
     @ModelAttribute
     fun addAttributes(model: Model) {
+        //This runs on every request to the controller
         model.addAttribute("error", "")
         model.addAttribute("firstNumber", "")
         model.addAttribute("secondNumber", "")
@@ -31,45 +36,49 @@ class WebController {
     ): String {
         var firstNumberVal: Double
         var secondNumberVal: Double
+        var result: Double? = null
 
         try{
-            
             firstNumberVal = firstNumber.toDouble()
             secondNumberVal = secondNumber.toDouble()
+            result = calculate(operation, firstNumberVal, secondNumberVal)
+            
         } catch (exp: NumberFormatException) {
-            model.addAttribute("error", "NumberFormatError")
+            model.addAttribute("error", "NumberFormatException")
+            model.addAttribute("result", "")
             model.addAttribute("firstNumber", firstNumber)
             model.addAttribute("secondNumber", secondNumber)
+            return "home"
+        } catch (exp: IllegalArgumentException) {
+            model.addAttribute("error", exp.message)
             model.addAttribute("result", "")
+            model.addAttribute("firstNumber", firstNumber)
+            model.addAttribute("secondNumber", secondNumber)
             return "home"
         }
 
-
-
-        when (operation) {
-            "+" ->
-                System.out.println("Addition operation selected")
-                /* 
-
-                calculate and set the result in the model with:
-                model.addAttribute("[attribute_name]", [result_value])
-
-                */
-                
-            "-" ->
-                System.out.println("Subtraction operation selected")
-                //smt here
-
-
-                
-            else -> { // when operation is not recognized
-                model.addAttribute("error", "OperationFormatError")
-                model.addAttribute("firstNumber", firstNumberVal)
-                model.addAttribute("secondNumber", secondNumberVal)
-                model.addAttribute("result", "")
-            }
-        }
+        // success: display
+        model.addAttribute("error", "") // clear error
+        model.addAttribute("result", result) // display result
+        model.addAttribute("firstNumber", firstNumber)
+        model.addAttribute("secondNumber", secondNumber)
         return "home"
     }
+
+    private fun calculate(operation: String, a: Double, b: Double): Double {
+
+        if (operation == "÷" && b == 0.0) {
+            throw IllegalArgumentException("Cannot divide by zero")
+        }
+
+        return when (operation) {
+            "+" -> a + b
+            "-" -> a - b
+            "×" -> a * b
+            "÷" -> a / b
+            else -> throw IllegalArgumentException("Invalid operation: $operation")
+        }
+    }
+
 }
 
