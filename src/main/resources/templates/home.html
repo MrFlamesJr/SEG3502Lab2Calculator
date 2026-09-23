@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lab2:Calculator</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+    <div>
+        <h1>Lab2:Calculator</h1>
+
+        <div th:switch="${error}">
+            <p th:case="NumberFormatError">
+                Wrong value provided for a number - must be a number
+            </p>
+        </div>
+
+    </div>
+</body>
+
+</html>
