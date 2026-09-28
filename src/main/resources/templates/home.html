@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -8,10 +8,31 @@
 </head>
 
 <body>
-    <!-- Replace this with your actuall UI -->
-    <p th:text="${result}"></p>
-    <p class="error" th:text="${error}"></p>
+<form th:action="@{/calculate}" method="get" class="calculator-container">
+    <div class="rows">
+        <div>
+            <h3>Premier nombre</h3>
+            <input type="number" th:name="firstNumber" th:value="${firstNumber}"
+                   onfocus="this.select()">
+        </div>
+        <div>
+            <h3>Deuxième nombre</h3>
+            <input type="number" th:name="secondNumber" th:value="${secondNumber}"
+                   onfocus="this.select()">
+        </div>
+        <div>
+            <h3>Résultat</h3>
+            <input type="number" readonly th:value="${result}">
+        </div>
+    </div>
 
+    <div class="operation-row">
+        <button type="submit" th:name="operation" th:value="'+'">+</button>
+        <button type="submit" th:name="operation" th:value="'-'">-</button>
+        <button type="submit" th:name="operation" th:value="'×'">×</button>
+        <button type="submit" th:name="operation" th:value="'÷'">÷</button>
+    </div>
+</form>
 </body>
 
 </html>
